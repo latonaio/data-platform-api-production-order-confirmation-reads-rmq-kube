@@ -13,70 +13,104 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 		i++
 		pm := Header{}
 		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.SupplyChainRelationshipID,
-			&pm.SupplyChainRelationshipProductionPlantID,
-			&pm.SupplyChainRelationshipDeliveryID,
-			&pm.SupplyChainRelationshipDeliveryPlantID,
-			&pm.ProductionOrderConfirmationType,
-			&pm.Product,
-			&pm.Buyer,
-			&pm.Seller,
-			&pm.OwnerProductionPlantBusinessPartner,
-			&pm.OwnerProductionPlant,
-			&pm.OwnerProductionPlantStorageLocation,
-			&pm.DepartureDeliverFromParty,
-			&pm.DepartureDeliverFromPlant,
-			&pm.DepartureDeliverFromPlantStorageLocation,
-			&pm.DestinationDeliverToParty,
-			&pm.DestinationDeliverToPlant,
-			&pm.DestinationDeliverToPlantStorageLocation,
-			&pm.ProductBaseUnit,
-			&pm.MRPArea,
-			&pm.MRPController,
-			&pm.ProductionVersion,
-			&pm.BillOfMaterial,
+			&pm.ProductionOrder,
+			&pm.ProductionOrderItem,
 			&pm.Operations,
-			&pm.ProductionOrderConfirmationQuantityInBaseUnit,
-			&pm.ProductionOrderConfirmationQuantityInDepartureProductionUnit,
-			&pm.ProductionOrderConfirmationQuantityInDestinationProductionUnit,
-			&pm.ProductionOrderConfirmationQuantityInDepartureDeliveryUnit,
-			&pm.ProductionOrderConfirmationQuantityInDestinationDeliveryUnit,
-			&pm.ProductionOrderConfirmationDepartureProductionUnit,
-			&pm.ProductionOrderConfirmationDestinationProductionUnit,
-			&pm.ProductionOrderConfirmationDepartureDeliveryUnit,
-			&pm.ProductionOrderConfirmationDestinationDeliveryUnit,
-			&pm.ProductionOrderConfirmationPlannedScrapQtyInBaseUnit,
-			&pm.ProductionOrderConfirmationPlannedStartDate,
-			&pm.ProductionOrderConfirmationPlannedStartTime,
-			&pm.ProductionOrderConfirmationPlannedEndDate,
-			&pm.ProductionOrderConfirmationPlannedEndTime,
-			&pm.ProductionOrderConfirmationActualReleaseDate,
-			&pm.ProductionOrderConfirmationActualReleaseTime,
-			&pm.ProductionOrderConfirmationActualStartDate,
-			&pm.ProductionOrderConfirmationActualStartTime,
-			&pm.ProductionOrderConfirmationActualEndDate,
-			&pm.ProductionOrderConfirmationActualEndTime,
-			&pm.PlannedOrder,
-			&pm.OrderID,
-			&pm.OrderItem,
-			&pm.ProductionOrderConfirmationHeaderText,
+			&pm.OperationsItem,
+			&pm.OperationID,
+			&pm.ConfirmationCountingID,
+			&pm.OperationPlannedQuantityInBaseUnit,
+			&pm.OperationPlannedQuantityInProductionUnit,
+			&pm.OperationPlannedQuantityInOperationUnit,
+			&pm.ProductBaseUnit,
+			&pm.ProductProductionUnit,
+			&pm.ProductOperationUnit,
+			&pm.OperationPlannedScrapInPercent,
+			&pm.ConfirmationEntryDate,
+			&pm.ConfirmationEntryTime,
+			&pm.ConfirmationText,
+			&pm.IsFinalConfirmation,
+			&pm.WorkCenter,
+			&pm.EmployeeIDWhoConfirmed,
+			&pm.ConfirmedExecutionStartDate,
+			&pm.ConfirmedExecutionStartTime,
+			&pm.ConfirmedSetupStartDate,
+			&pm.ConfirmedSetupStartTime,
+			&pm.ConfirmedProcessingStartDate,
+			&pm.ConfirmedProcessingStartTime,
+			&pm.ConfirmedExecutionEndDate,
+			&pm.ConfirmedExecutionEndTime,
+			&pm.ConfirmedSetupEndDate,
+			&pm.ConfirmedSetupEndTime,
+			&pm.ConfirmedProcessingEndDate,
+			&pm.ConfirmedProcessingEndTime,
+			&pm.ConfirmedWaitDuration,
+			&pm.WaitDurationUnit,
+			&pm.ConfirmedQueueDuration,
+			&pm.QueueDurationUnit,
+			&pm.ConfirmedMoveDuration,
+			&pm.MoveDurationUnit,
+			&pm.ConfirmedYieldQuantity,
+			&pm.ConfirmedScrapQuantity,
+			&pm.OperationVarianceReason,
 			&pm.CreationDate,
 			&pm.CreationTime,
 			&pm.LastChangeDate,
 			&pm.LastChangeTime,
-			&pm.IsReleased,
-			&pm.IsPartiallyConfirmed,
-			&pm.IsConfirmed,
-			&pm.IsLocked,
 			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
 			return &header, err
 		}
-		header = append(header, pm)
+		data := pm
+		header = append(header, Header{
+			ProductionOrder:                          data.ProductionOrder,
+			ProductionOrderItem:                      data.ProductionOrderItem,
+			Operations:                               data.Operations,
+			OperationsItem:                           data.OperationsItem,
+			OperationID:                              data.OperationID,
+			ConfirmationCountingID:                   data.ConfirmationCountingID,
+			OperationPlannedQuantityInBaseUnit:       data.OperationPlannedQuantityInBaseUnit,
+			OperationPlannedQuantityInProductionUnit: data.OperationPlannedQuantityInProductionUnit,
+			OperationPlannedQuantityInOperationUnit:  data.OperationPlannedQuantityInOperationUnit,
+			ProductBaseUnit:                          data.ProductBaseUnit,
+			ProductProductionUnit:                    data.ProductProductionUnit,
+			ProductOperationUnit:                     data.ProductOperationUnit,
+			OperationPlannedScrapInPercent:           data.OperationPlannedScrapInPercent,
+			ConfirmationEntryDate:                    data.ConfirmationEntryDate,
+			ConfirmationEntryTime:                    data.ConfirmationEntryTime,
+			ConfirmationText:                         data.ConfirmationText,
+			IsFinalConfirmation:                      data.IsFinalConfirmation,
+			WorkCenter:                               data.WorkCenter,
+			EmployeeIDWhoConfirmed:                   data.EmployeeIDWhoConfirmed,
+			ConfirmedExecutionStartDate:              data.ConfirmedExecutionStartDate,
+			ConfirmedExecutionStartTime:              data.ConfirmedExecutionStartTime,
+			ConfirmedSetupStartDate:                  data.ConfirmedSetupStartDate,
+			ConfirmedSetupStartTime:                  data.ConfirmedSetupStartTime,
+			ConfirmedProcessingStartDate:             data.ConfirmedProcessingStartDate,
+			ConfirmedProcessingStartTime:             data.ConfirmedProcessingStartTime,
+			ConfirmedExecutionEndDate:                data.ConfirmedExecutionEndDate,
+			ConfirmedExecutionEndTime:                data.ConfirmedExecutionEndTime,
+			ConfirmedSetupEndDate:                    data.ConfirmedSetupEndDate,
+			ConfirmedSetupEndTime:                    data.ConfirmedSetupEndTime,
+			ConfirmedProcessingEndDate:               data.ConfirmedProcessingEndDate,
+			ConfirmedProcessingEndTime:               data.ConfirmedProcessingEndTime,
+			ConfirmedWaitDuration:                    data.ConfirmedWaitDuration,
+			WaitDurationUnit:                         data.WaitDurationUnit,
+			ConfirmedQueueDuration:                   data.ConfirmedQueueDuration,
+			QueueDurationUnit:                        data.QueueDurationUnit,
+			ConfirmedMoveDuration:                    data.ConfirmedMoveDuration,
+			MoveDurationUnit:                         data.MoveDurationUnit,
+			ConfirmedYieldQuantity:                   data.ConfirmedYieldQuantity,
+			ConfirmedScrapQuantity:                   data.ConfirmedScrapQuantity,
+			OperationVarianceReason:                  data.OperationVarianceReason,
+			CreationDate:                             data.CreationDate,
+			CreationTime:                             data.CreationTime,
+			LastChangeDate:                           data.LastChangeDate,
+			LastChangeTime:                           data.LastChangeTime,
+			IsCancelled:                              data.IsCancelled,
+		})
 	}
 	if i == 0 {
 		fmt.Printf("DBに対象のレコードが存在しません。")
@@ -84,511 +118,4 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 	}
 
 	return &header, nil
-}
-
-func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
-	defer rows.Close()
-	item := make([]Item, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := Item{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.PrecedingProductionOrderConfirmationItem,
-			&pm.FollowingProductionOrderConfirmationItem,
-			&pm.SupplyChainRelationshipID,
-			&pm.SupplyChainRelationshipProductionPlantID,
-			&pm.SupplyChainRelationshipDeliveryID,
-			&pm.SupplyChainRelationshipDeliveryPlantID,
-			&pm.ProductionOrderConfirmationType,
-			&pm.Product,
-			&pm.ProductProductionUnit,
-			&pm.Seller,
-			&pm.ProductionPlantBusinessPartner,
-			&pm.ProductionPlant,
-			&pm.ProductionPlantStorageLocation,
-			&pm.DeliverToParty,
-			&pm.DeliverToPlant,
-			&pm.DeliverToPlantStorageLocation,
-			&pm.DeliverFromParty,
-			&pm.DeliverFromPlant,
-			&pm.DeliverFromPlantStorageLocation,
-			&pm.MRPArea,
-			&pm.MRPController,
-			&pm.ProductBaseUnit,
-			&pm.ProductProductionUnit,
-			&pm.ProductDeliveryUnit,
-			&pm.ProductionVersion,
-			&pm.ProductionVersionItem,
-			&pm.BillOfMaterial,
-			&pm.Operations,
-			&pm.ProductionOrderConfirmationQuantityInBaseUnit,
-			&pm.ProductionOrderConfirmationQuantityInProductionUnit,
-			&pm.ProductionOrderConfirmationQuantityInDeliveryUnit,
-			&pm.ProductionOrderConfirmationPlannedScrapQtyInBaseUnit,
-			&pm.ProductionOrderConfirmationMinimumLotSizeQuantity,
-			&pm.ProductionOrderConfirmationStandardLotSizeQuantity,
-			&pm.ProductionOrderConfirmationMaximumLotSizeQuantity,
-			&pm.ProductionOrderConfirmationLotSizeRoundingQuantity,
-			&pm.ProductionOrderConfirmationLotSizeIsFixed,
-			&pm.ProductionOrderConfirmationPlannedStartDate,
-			&pm.ProductionOrderConfirmationPlannedStartTime,
-			&pm.ProductionOrderConfirmationPlannedEndDate,
-			&pm.ProductionOrderConfirmationPlannedEndTime,
-			&pm.ProductionOrderConfirmationActualReleaseDate,
-			&pm.ProductionOrderConfirmationActualReleaseTime,
-			&pm.ProductionOrderConfirmationActualStartDate,
-			&pm.ProductionOrderConfirmationActualStartTime,
-			&pm.ProductionOrderConfirmationActualEndDate,
-			&pm.ProductionOrderConfirmationActualEndTime,
-			&pm.ConfirmedYieldQuantityInBaseUnit,
-			&pm.ConfirmedYieldQuantityInProductionUnit,
-			&pm.ScrappedQuantityInBaseUnit,
-			&pm.PlannedOrder,
-			&pm.PlannedOrderItem,
-			&pm.OrderID,
-			&pm.OrderItem,
-			&pm.ProductIsBatchManagedInProductionPlant,
-			&pm.BatchMgmtPolicyInProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationTargetedBatch,
-			&pm.ProductionOrderConfirmationTargetedBatchValidityStartDate,
-			&pm.ProductionOrderConfirmationTargetedBatchValidityStartTime,
-			&pm.ProductionOrderConfirmationTargetedBatchValidityEndDate,
-			&pm.ProductionOrderConfirmationTargetedBatchValidityEndTime,
-			&pm.ProductionOrderConfirmationItemText,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.ComponentProductAvailabilityIsNotChecked,
-			&pm.IsReleased,
-			&pm.IsPartiallyConfirmed,
-			&pm.IsConfirmed,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &item, err
-		}
-		item = append(item, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &item, nil
-	}
-
-	return &item, nil
-}
-
-func ConvertToItemComponent(rows *sql.Rows) (*[]ItemComponent, error) {
-	defer rows.Close()
-	itemComponent := make([]ItemComponent, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := ItemComponent{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.BillOfMaterial,
-			&pm.BillOfMaterialItem,
-			&pm.SupplyChainRelationshipID,
-			&pm.SupplyChainRelationshipDeliveryID,
-			&pm.SupplyChainRelationshipDeliveryPlantID,
-			&pm.SupplyChainRelationshipStockConfPlantID,
-			&pm.ProductionPlantBusinessPartner,
-			&pm.ProductionPlant,
-			&pm.MRPArea,
-			&pm.MRPController,
-			&pm.ProductionVersion,
-			&pm.ProductionVersionItem,
-			&pm.ComponentProduct,
-			&pm.ComponentProductBuyer,
-			&pm.ComponentProductSeller,
-			&pm.ComponentProductDeliverToParty,
-			&pm.ComponentProductDeliverToPlant,
-			&pm.ComponentProductDeliverFromParty,
-			&pm.ComponentProductDeliverFromPlant,
-			&pm.ComponentProductBaseUnit,
-			&pm.ComponentProductDeliveryUnit,
-			&pm.ComponentProductRequirementDate,
-			&pm.ComponentProductRequirementTime,
-			&pm.ComponentProductRequiredQuantityInBaseUnit,
-			&pm.ComponentProductRequiredQuantityInDeliveryUnit,
-			&pm.ComponentProductPlannedScrapInPercent,
-			&pm.ComponentProductIsMarkedForBackflush,
-			&pm.StockConfirmationBusinessPartner,
-			&pm.StockConfirmationPlant,
-			&pm.StockConfirmationPlantStorageLocation,
-			&pm.PlannedOrder,
-			&pm.PlannedOrderItem,
-			&pm.BillOfMaterialItemText,
-			&pm.ComponentProductBatch,
-			&pm.ComponentProductBatchValidityStartDate,
-			&pm.ComponentProductBatchValidityStartTime,
-			&pm.ComponentProductBatchValidityEndDate,
-			&pm.ComponentProductBatchValidityEndTime,
-			&pm.ComponentProductCostingPolicy,
-			&pm.ComponentProductPriceUnitQty,
-			&pm.ComponentProductStandardPrice,
-			&pm.ComponentProductMovingAveragePrice,
-			&pm.ComponentProductWithdrawnQuantity,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.ComponentProductAvailabilityIsNotChecked,
-			&pm.IsReleased,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &itemComponent, err
-		}
-		itemComponent = append(itemComponent, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &itemComponent, nil
-	}
-
-	return &itemComponent, nil
-}
-
-func ConvertToItemComponentDeliveryScheduleLine(rows *sql.Rows) (*[]ItemComponentDeliveryScheduleLine, error) {
-	defer rows.Close()
-	itemComponentDeliveryScheduleLine := make([]ItemComponentDeliveryScheduleLine, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := ItemComponentDeliveryScheduleLine{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.BillOfMaterial,
-			&pm.BillOfMaterialItem,
-			&pm.ScheduleLine,
-			&pm.SupplyChainRelationshipID,
-			&pm.SupplyChainRelationshipStockConfPlantID,
-			&pm.ComponentProduct,
-			&pm.StockConfirmationBusinessPartner,
-			&pm.StockConfirmationPlant,
-			&pm.StockConfirmationPlantTimeZone,
-			&pm.ComponentProductBatch,
-			&pm.ComponentProductBatchValidityStartDate,
-			&pm.ComponentProductBatchValidityStartTime,
-			&pm.ComponentProductBatchValidityEndDate,
-			&pm.ComponentProductBatchValidityEndTime,
-			&pm.RequestedDeliveryDate,
-			&pm.RequestedDeliveryTime,
-			&pm.ConfirmedDeliveryDate,
-			&pm.ConfirmedDeliveryTime,
-			&pm.OriginalRequiredQuantityInBaseUnit,
-			&pm.ConfirmedQuantityByPDTAvailCheckInBaseUnit,
-			&pm.OpenConfirmedQuantityInBaseUnit,
-			&pm.DeliveredQuantityInBaseUnit,
-			&pm.UndeliveredQuantityInBaseUnit,
-			&pm.StockIsFullyConfirmed,
-			&pm.PlusMinusFlag,
-			&pm.ItemScheduleLineDeliveryBlockStatus,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.IsReleased,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &itemComponentDeliveryScheduleLine, err
-		}
-		itemComponentDeliveryScheduleLine = append(itemComponentDeliveryScheduleLine, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &itemComponentDeliveryScheduleLine, nil
-	}
-
-	return &itemComponentDeliveryScheduleLine, nil
-}
-
-func ConvertToItemComponentCosting(rows *sql.Rows) (*[]ItemComponentCosting, error) {
-	defer rows.Close()
-	itemComponentCosting := make([]ItemComponentCosting, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := ItemComponentCosting{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.BillOfMaterial,
-			&pm.BillOfMaterialItem,
-			&pm.Currency,
-			&pm.CostingAmount,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.IsReleased,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &itemComponentCosting, err
-		}
-		itemComponentCosting = append(itemComponentCosting, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &itemComponentCosting, nil
-	}
-
-	return &itemComponentCosting, nil
-}
-
-func ConvertToItemOperationCosting(rows *sql.Rows) (*[]ItemOperationCosting, error) {
-	defer rows.Close()
-	itemOperationCosting := make([]ItemOperationCosting, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := ItemOperationCosting{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.Operations,
-			&pm.OperationsItem,
-			&pm.OperationID,
-			&pm.Currency,
-			&pm.CostingAmount,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.IsReleased,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &itemOperationCosting, err
-		}
-		itemOperationCosting = append(itemOperationCosting, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &itemOperationCosting, nil
-	}
-
-	return &itemOperationCosting, nil
-}
-
-func ConvertToItemOperation(rows *sql.Rows) (*[]ItemOperation, error) {
-	defer rows.Close()
-	itemOperation := make([]ItemOperation, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := ItemOperation{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.Operations,
-			&pm.OperationsItem,
-			&pm.OperationID,
-			&pm.SupplyChainRelationshipID,
-			&pm.SupplyChainRelationshipDeliveryID,
-			&pm.SupplyChainRelationshipDeliveryPlantID,
-			&pm.SupplyChainRelationshipProductionPlantID,
-			&pm.Product,
-			&pm.Buyer,
-			&pm.Seller,
-			&pm.DeliverToParty,
-			&pm.DeliverToPlant,
-			&pm.DeliverFromParty,
-			&pm.DeliverFromPlant,
-			&pm.ProductionPlantBusinessPartner,
-			&pm.ProductionPlant,
-			&pm.MRPArea,
-			&pm.MRPController,
-			&pm.ProductionVersion,
-			&pm.ProductionVersionItem,
-			&pm.Sequence,
-			&pm.SequenceText,
-			&pm.OperationText,
-			&pm.ProductBaseUnit,
-			&pm.ProductProductionUnit,
-			&pm.ProductOperationUnit,
-			&pm.ProductDeliveryUnit,
-			&pm.StandardLotSizeQuantity,
-			&pm.MinimumLotSizeQuantity,
-			&pm.MaximumLotSizeQuantity,
-			&pm.OperationPlannedQuantityInBaseUnit,
-			&pm.OperationPlannedQuantityInProductionUnit,
-			&pm.OperationPlannedQuantityInOperationUnit,
-			&pm.OperationPlannedQuantityInDeliveryUnit,
-			&pm.OperationPlannedScrapInPercent,
-			&pm.ResponsiblePlannerGroup,
-			&pm.PlainLongText,
-			&pm.WorkCenter,
-			&pm.CapacityCategory,
-			&pm.OperationCostingRelevancyType,
-			&pm.OperationSetupType,
-			&pm.OperationSetupGroupCategory,
-			&pm.OperationSetupGroup,
-			&pm.MaximumWaitDuration,
-			&pm.StandardWaitDuration,
-			&pm.MinimumWaitDuration,
-			&pm.WaitDurationUnit,
-			&pm.MaximumQueDuration,
-			&pm.StandardQueueDuration,
-			&pm.MinimumQueueDuration,
-			&pm.QueDurationUnit,
-			&pm.MaximumMoveDuration,
-			&pm.StandardMoveDuration,
-			&pm.MinimumMoveDuration,
-			&pm.MoveDurationUnit,
-			&pm.StandardDeliveryDuration,
-			&pm.StandardDeliveryDurationUnit,
-			&pm.CostElement,
-			&pm.OperationErlstSchedldExecStrtDte,
-			&pm.OperationErlstSchedldExecStrtTme,
-			&pm.OperationErlstSchedldExecEndDte,
-			&pm.OperationErlstSchedldExecEndTme,
-			&pm.OperationActualExecutionStartDate,
-			&pm.OperationActualExecutionStartTime,
-			&pm.OperationActualExecutionEndDate,
-			&pm.OperationActualExecutionEndTime,
-			&pm.OperationConfirmedYieldQuantityInBaseUnit,
-			&pm.OperationConfirmedYieldQuantityInProductionUnit,
-			&pm.OperationConfirmedYieldQuantityInOperationUnit,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.IsReleased,
-			&pm.IsPartiallyConfirmed,
-			&pm.IsConfirmed,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &itemOperation, err
-		}
-		itemOperation = append(itemOperation, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &itemOperation, nil
-	}
-
-	return &itemOperation, nil
-}
-
-func ConvertToItemOperationComponent(rows *sql.Rows) (*[]ItemOperationComponent, error) {
-	defer rows.Close()
-	itemOperationComponent := make([]ItemOperationComponent, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := ItemOperationComponent{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.ProductionOrderConfirmationItem,
-			&pm.Operations,
-			&pm.OperationsItem,
-			&pm.OperationID,
-			&pm.BillOfMaterial,
-			&pm.BillOfMaterialItem,
-			&pm.SupplyChainRelationshipID,
-			&pm.SupplyChainRelationshipDeliveryID,
-			&pm.SupplyChainRelationshipDeliveryPlantID,
-			&pm.ProductionPlantBusinessPartner,
-			&pm.ProductionPlant,
-			&pm.ComponentProduct,
-			&pm.ComponentProductBuyer,
-			&pm.ComponentProductSeller,
-			&pm.ComponentProductDeliverToParty,
-			&pm.ComponentProductDeliverToPlant,
-			&pm.ComponentProductDeliverFromParty,
-			&pm.ComponentProductDeliverFromPlant,
-			&pm.ComponentProductDeliverToPartyInOperation,
-			&pm.ComponentProductDeliverToPlantInOperation,
-			&pm.ComponentProductDeliverFromPartyInOperation,
-			&pm.ComponentProductDeliverFromPlantInOperation,
-			&pm.ComponentProductRequirementDateInOperation,
-			&pm.ComponentProductRequirementTimeInOperation,
-			&pm.ComponentProductPlannedQuantityInBaseUnitInOperation,
-			&pm.ComponentProductPlannedQuantityInDeliveryUnitInOperation,
-			&pm.ComponentProductPlannedScrapInPercentInOperation,
-			&pm.ComponentProductBaseUnit,
-			&pm.ComponentProductDeliveryUnit,
-			&pm.ComponentProductIsMarkedForBackflush,
-			&pm.MRPArea,
-			&pm.MRPController,
-			&pm.ProductionVersion,
-			&pm.ProductionVersionItem,
-			&pm.ComponentProductReservation,
-			&pm.ComponentProductReservationItem,
-			&pm.CreationDate,
-			&pm.CreationTime,
-			&pm.LastChangeDate,
-			&pm.LastChangeTime,
-			&pm.IsReleased,
-			&pm.IsLocked,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &itemOperationComponent, err
-		}
-		itemOperationComponent = append(itemOperationComponent, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &itemOperationComponent, nil
-	}
-
-	return &itemOperationComponent, nil
-}
-
-func ConvertToHeadersByOwnerProductionPlantBusinessPartner(rows *sql.Rows) (*[]HeadersByOwnerProductionPlantBusinessPartner, error) {
-	defer rows.Close()
-	headersByOwnerProductionPlantBusinessPartner := make([]HeadersByOwnerProductionPlantBusinessPartner, 0)
-	i := 0
-	for rows.Next() {
-		i++
-		pm := HeadersByOwnerProductionPlantBusinessPartner{}
-		err := rows.Scan(
-			&pm.ProductionOrderConfirmation,
-			&pm.MRPArea,
-			&pm.OwnerProductionPlantBusinessPartnerName,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &headersByOwnerProductionPlantBusinessPartner, err
-		}
-		headersByOwnerProductionPlantBusinessPartner = append(headersByOwnerProductionPlantBusinessPartner, pm)
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &headersByOwnerProductionPlantBusinessPartner, nil
-	}
-
-	return &headersByOwnerProductionPlantBusinessPartner, nil
 }
